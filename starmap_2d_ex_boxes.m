@@ -38,7 +38,7 @@ prob = struct(...
 'sigma_s0',@sigma_s0,... % isotropic scattering coefficient (def. below)
 'source',@source,... % source term (defined below)
 'ax',[0 5 0 5],... % coordinates of computational domain
-'n',[200 200],... % numbers of grid cells in each coordinate direction
+'n',[250 250],... % numbers of grid cells in each coordinate direction
 'bc',[1 1],... % type of boundary cond. (0 = periodic, 1 = extrapolation)
 't_plot',linspace(0,1,21),... % output times
 'output',@output... % problem-specific output routine (defined below)

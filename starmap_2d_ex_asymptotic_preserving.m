@@ -29,6 +29,7 @@ function starmap_2d_ex_asymptotic_preserving
 %========================================================================
 % Problem Parameters
 %========================================================================
+close all
 prob = struct(...
 'name','Asymptotic Preserving Test',... % name of example
 'closure','P',... % type of closure (can be 'P' or 'SP')
@@ -74,19 +75,19 @@ f = 0;
 function output(par,x,y,U,step)
 % Plotting routine, showing the 2D results and a 1D cross-section.
 t = par.t_plot(step);                                   % Time of output.
-phi_max = max(max(max(U))/2);           % Axis/color scaling.
+phi_max = max(max(max(U)));                         % Axis/color scaling.
 % Timestep used - hyperbolic or parabolic
 if par.timestep >0, type = 'Parabolic'; else, type = 'Hyperbolic'; end
 txt = strcat('Isotropic scattering = ',num2str(par.prob.sigma_s0(0,0)),...
     ',  ',type, ' timestepping');
 clf, subplot(1,3,1:2), imagesc(x,y,U')        % 2D plot of approximation.
-axis xy equal tight, caxis([-1 1]*phi_max*1.6)
+axis xy equal tight, caxis([-1 1]*phi_max)
 title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,par.n_mom,t))
 colormap jet(255); colorbar
 subplot(1,3,3)
 r = linspace(0,max(x),100); phi = interp2(x,y,U,r,0); % 1D cross section.
 hold on, plot(r,phi,'r-','linewidth',1), hold off   % Plot approximation.
-axis([0 max(x) [-0.75 2.5]*phi_max])
+axis([0 max(x) [-1 1]*phi_max])
 legend(sprintf('%s%d model',par.closure,par.n_mom),'Location','SouthEast')
 title('Cut at x>0, y=0')
 annotation('textbox',[0,0,1, 1],'String',txt);

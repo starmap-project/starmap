@@ -22,6 +22,7 @@ function starmap_3d_ex_lattice
 %========================================================================
 % Problem Parameters
 %========================================================================
+close all
 prob = struct(...
 'name','Lattice Test 3D',... % name of example
 'closure','P',... % type of closure (can be 'P' or 'SP')
@@ -38,7 +39,6 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-close all
 par = starmap_init(prob); % Configure data structures for starmap solver.
 starmap_solver(par)                                         % Run solver.
 %========================================================================

@@ -84,7 +84,8 @@ r = linspace(0,max(x),100); phi = interp2(x,y,U,r,0); % 1D cross section.
 plot(r0,phi0,'-','linewidth',2,'color',[.6 .6 1])   % Plot true solution.
 hold on, plot(r,phi,'r-','linewidth',1), hold off   % Plot approximation.
 axis([0 max(x) [-0.75 2.5]*phi_max])
-legend('true solution',sprintf('%s%d model',par.closure,par.n_mom),'Location','SouthEast')
+legend('true solution',sprintf('%s%d model',par.closure,par.n_mom), ...
+    'Location','SouthEast')
 title('Cut at x>0, y=0')
 drawnow
 
