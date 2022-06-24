@@ -1,0 +1,103 @@
+=================================================================
+StaRMAP ChangeLog
+=================================================================
+
+=================================================================
+Version 1.9 --> Version 2.0  (06/28/2022)
+=================================================================
+** Examples Files **
+- Changed naming convention to include dimension
+- Example files call starmap_init.m to set up variables for starmap solver
+- User defined structures renamed to prob
+- Removed diffusion correction closure tests in starmap_2d_ex_homogeneous.m
+- Added starmap_1d_ex_gauss.m
+- Added starmap_1d_ex_planesource.m
+- Added starmap_2d_ex_asymptotic_preserving.m
+- Added starmap_3d_ex_lattice.m
+- Added starmap_3d_ex_pointsource.m
+
+** Solver file : starmap_solver.m **
+- Data structures changed from 2D to 3D
+- Solver can handle 1D and 3D examples
+- Removed diffusion correction closure
+- For 1D or 2D examples extra dimensions are resolved with 1 spatial grid point
+
+** Other Changes **
+- Code now hosted on GitHub
+- Added starmap_init.m that sets up variables for starmap solver
+- Added 1D and 3D moment matrices to starmap_closure_pn.m and
+  starmap_closure_spn.m
+- StaRMAP website changed in all files
+
+=================================================================
+Version 1.5 --> Version 1.9  (03/13/2015)
+=================================================================
+- all example files: Changed naming convention of par.closure.
+
+- starmap_ex_homogeneous.m: This test case was added.
+
+- starmap_ex_lattice_diffusion.m: This test case was added.
+
+- starmap_solver.m: Added parabolic time step (determined
+  automatically) and diffusion correction closure.
+
+=================================================================
+Version 1.1 --> Version 1.5  (10/10/2014)
+=================================================================
+- starmap_create_hemisphere_filter_convergence.m: This test case
+  was added.
+
+- starmap_ex_checkerboard.m: This file was renamed to
+  starmap_ex_lattice.m.
+
+- starmap_ex_gauss_filter_convergence.m: This test case was
+  added.
+
+- starmap_ex_lattice.m: This file is what was previously the file
+  starmap_ex_checkerboard.m.
+
+- starmap_ex_lattice_filter.m: This test case was added.
+
+- starmap_ex_lattice_filter_convergence: This test case was
+  added.
+
+- starmap_ex_linesource_filter.m: This test case was added.
+
+- starpmap_ex_linesource_filter_reconstruction.m: This test case
+  was added.
+
+- starmap_solver.m: Added filtering steps and functions.
+
+=================================================================
+Version 1.0 --> Version 1.1  (07/14/2013)
+=================================================================
+- starmap_create_beam.m: Added a comment that due to the void in
+  the domain, the moment approximation cannot be used to solve
+  for a steady state solution.
+
+- starmap_create_mms.m: Added a comment regarding the need of
+  the Symbolic Toolbox.
+- starmap_create_mms.m: Now the errors for all moments are
+  computed and plotted in sub-figures. Different components of
+  the same moment order are combined into a single error value.
+
+- starmap_ex_boxes.m: Adapted to account for new output argument
+  structure of starmap_solver.m.
+
+- starmap_ex_checkerboard.m: Added a cross section plot,
+  evaluated along the line x=3.5.
+- starmap_ex_checkerboard.m: Modified plotting color scale.
+  Negative radiative intensities are now depicted in gray.
+
+- starmap_ex_l2norm.m: This test case was added.
+
+- starmap_ex_linesource.m: Added two remarks; one regarding the
+  width of the initial Gaussian, and another regarding the use
+  of the SPN approximation.
+- starmap_ex_linesource.m: Addressed an error that occurred when
+  providing a zero initial radiative intensity.
+
+- starmap_solver.m: Added text output of test case information
+  and number of moments, grid cells, and time steps.
+- starmap_solver.m: Output arguments are now all grids and all
+  solution components.
