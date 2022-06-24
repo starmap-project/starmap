@@ -90,7 +90,7 @@ fprintf(fid,'%s%s%s\n','%   Created by the file ',mfilename,'.m');
 fprintf(fid,'%s\n','%');
 fprintf(fid,'%s\n','%   Version 2.0');
 fprintf(fid,'%s\n','%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and');
-fprintf(fid,'%s\n','%                            Rujeko Chinomona')
+fprintf(fid,'%s\n','%                            Rujeko Chinomona');
 fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold');
 fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
 fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)');
