@@ -31,7 +31,7 @@ function starmap_2d_ex_linesource
 %   https://github.com/starmap-project
 
 %   For license, see file starmap_solver.m, as published on
-%   http://www.math.temple.edu/~seibold/research/starmap
+%   https://github.com/starmap-project/starmap
 
 %========================================================================
 % Problem Parameters

@@ -23,7 +23,7 @@ function [moment_order,Mx,My,Mz] = starmap_closure_spn(n_mom,dim)
   %   https://github.com/starmap-project
 
   %   For license, see file starmap_solver.m, as published on
-  %   http://www.math.temple.edu/~seibold/research/starmap
+  %   https://github.com/starmap-project/starmap
 
   %========================================================================
   switch dim

@@ -23,7 +23,7 @@ function starmap_1d_ex_planesource
 %   https://github.com/starmap-project
 
 %   For license, see file starmap_solver.m, as published on
-%   http://www.math.temple.edu/~seibold/research/starmap
+%   https://github.com/starmap-project/starmap
 
 %========================================================================
 % Problem Parameters
@@ -37,7 +37,6 @@ prob = struct(...
 'ic',@initial,... % initial conditions (defined below)
 'ax',[-1 1]*0.6,... % coordinates of computational domain
 'n',1000,... % numbers of grid cells in each coordinate direction
-'dim',1,... %
 'bc',0,... % type of boundary cond. (0 = periodic, 1 = extrapolation)
 't_plot',linspace(0,0.4,21),... % output times
 'output',@output... % problem-specific output routine (defined below)

@@ -24,7 +24,7 @@ function starmap_2d_create_mms
 %   https://github.com/starmap-project
 
 %   For license, see file starmap_solver.m, as published on
-%   http://www.math.temple.edu/~seibold/research/starmap
+%   https://github.com/starmap-project/starmap
 
 %========================================================================
 % Problem Parameters
@@ -92,7 +92,7 @@ fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
 fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%   For license, see file starmap_solver.m, as published on');
-fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold/research/starmap');
+fprintf(fid,'%s\n','%   https://github.com/starmap-project/starmap');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','% Problem Parameters');

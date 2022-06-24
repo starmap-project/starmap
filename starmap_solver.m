@@ -34,7 +34,7 @@ function output = starmap_solver(par)
 %     included in all copies or substantial portions of the Software.
 %   * Appropriate references shall be given to the name of the Software
 %     (StaRMAP), the website of the Software
-%     (http://www.math.temple.edu/~seibold/research/starmap)
+%     (https://github.com/starmap-project/starmap)
 %     and the appropriate research article(s) corresponding to the
 %     Software, in particular:
 %     B. Seibold, M. Frank, ACM Transactions on Mathematical Software,
