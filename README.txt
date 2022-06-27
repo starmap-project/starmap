@@ -10,7 +10,7 @@ Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
                          Rujeko Chinomona
 http://www.math.temple.edu/~seibold
 https://www.scc.kit.edu/personen/martin.frank.php
-https://github.com/rujekoc
+https://rujekoc.github.io/
 
 Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 
