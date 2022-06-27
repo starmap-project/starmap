@@ -4,21 +4,28 @@ function starmap_2d_ex_asymptotic_preserving
 %   grid finite difference solver for linear hyperbolic moment
 %   approximations to radiative transfer in 1D-3D geometries.
 %
-%   Example: Demonstrates asymptotic preserving properties of
-%   STARMAP_SOLVER. This test case has a narrow Gaussian as
-%   initial condition. Comparisons are made between the use
-%   of a hyperbolic timestep and a parabolic timestep in regimes
-%   of large scattering coefficients. The final time and isotropic
-%   scattering depend on a parameter epsilon. For each value of
-%   epsilon, the solver is called with a hyperbolic timestep then a
-%   parabolic timestep. Four figures are generated.
+%   Example: Demonstrates the asymptotic preserving (AP) properties of
+%   STARMAP_SOLVER. This test case considers a narrow Gaussian as
+%   initial condition, spreading outwards under large scattering
+%   ("diffusive regime"). A comparison is conducted between the use of
+%   a hyperbolic timestep and a parabolic timestep, in two regimes of
+%   large scattering coefficients. Both the isotropic scattering and
+%   the final time scale with 1/epsilon, where the asymptotic parameter
+%   epsilon is given two possible small values.
+%   The resulting four figures showcase the method's AP property: the
+%   numerical solutions essentially agree with each other, even in the
+%   case where the spatial grid does not resolve the small parameter.
+%   Moreover, the computational cost scales with 1/epsilon for the
+%   hyperbolic time step, while the parabolic time step's cost is
+%   indepdendent of epsilon.
 %
 %   Version 2.0
 %   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://github.com/rujekoc
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -44,19 +51,19 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-eps = [1e-3,1e-4]; % scaling parameters
-for ep=eps
-    prob.t_plot = linspace(0,0.005,21)/ep; % output times
-    prob.sigma_s0 = @(x,y) 1/ep; % Isotropic scattering coefficient.
+epsilon = [1e-3,1e-4];                    % Asymptotic parameter choices.
+for ep = epsilon
+    prob.t_plot = linspace(0,0.005,21)/ep;                % Output times.
+    prob.sigma_s0 = @(x,y) 1/ep;      % Isotropic scattering coefficient.
 
-    prob.timestep = 0; % use hyperbolic timestep
+    prob.timestep = 0;                         % Use hyperbolic timestep.
     figure
-    par = starmap_init(prob);  % Configure data structures for starmap solver
+    par = starmap_init(prob);     % Configure data structures for solver.
     starmap_solver(par)                                     % Run solver.
 
-    prob.timestep = 1; % use parabolic timestep
+    prob.timestep = 1;                          % Use parabolic timestep.
     figure
-    par = starmap_init(prob); % Configure data structures for starmap solver
+    par = starmap_init(prob);     % Configure data structures for solver.
     starmap_solver(par)                                     % Run solver.
 end
 
@@ -82,13 +89,15 @@ txt = strcat('Isotropic scattering = ',num2str(par.prob.sigma_s0(0,0)),...
     ',  ',type, ' timestepping');
 clf, subplot(1,3,1:2), imagesc(x,y,U')        % 2D plot of approximation.
 axis xy equal tight, caxis([-1 1]*phi_max)
-title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,par.n_mom,t))
+title(sprintf('%s with %s%d at t = %0.2f',...
+    par.name,par.closure,par.n_mom,t))
 colormap jet(255); colorbar
 subplot(1,3,3)
 r = linspace(0,max(x),100); phi = interp2(x,y,U,r,0); % 1D cross section.
 hold on, plot(r,phi,'r-','linewidth',1), hold off   % Plot approximation.
 axis([0 max(x) [-1 1]*phi_max])
-legend(sprintf('%s%d model',par.closure,par.n_mom),'Location','SouthEast')
+legend(sprintf('%s%d model',par.closure,par.n_mom),...
+    'Location','SouthEast')
 title('Cut at x>0, y=0')
 annotation('textbox',[0,0,1, 1],'String',txt);
 drawnow

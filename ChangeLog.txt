@@ -5,29 +5,33 @@ StaRMAP ChangeLog
 =================================================================
 Version 1.9 --> Version 2.0  (06/28/2022)
 =================================================================
+** Fundamental Changes **
+- The starmap_solver.m file now solves 3D problems.
+- The file starmap_init.m was added to the pipeline. The moment
+  matrices are new created in it. Moreover, user-specified 1D and
+  2D problems are converted into 3D data structures, so that the
+  starmap_solver.m file can solve them (by prescribing the other
+  dimensions to have 1 grid point).
+- PN and SPN moment matrices for 1D, 2D, and 3D are now available
+  in starmap_closure_pn.m and starmap_closure_spn.m.
+- Removed diffusion correction closure from starmap_solver.m.
+
 ** Examples Files **
-- Changed naming convention to include dimension
-- Example files call starmap_init.m to set up variables for starmap solver
-- User defined structures renamed to prob
-- Removed diffusion correction closure tests in starmap_2d_ex_homogeneous.m
+- Changed naming convention to include dimension in file name.
+- Example files now call starmap_init.m to set up variables for
+  running starmap_solver.m.
+- User-defined problem structures renamed to prob.
+- Removed diffusion correction closure tests from
+  starmap_2d_ex_homogeneous.m.
 - Added starmap_1d_ex_gauss.m
 - Added starmap_1d_ex_planesource.m
 - Added starmap_2d_ex_asymptotic_preserving.m
 - Added starmap_3d_ex_lattice.m
 - Added starmap_3d_ex_pointsource.m
 
-** Solver file : starmap_solver.m **
-- Data structures changed from 2D to 3D
-- Solver can handle 1D and 3D examples
-- Removed diffusion correction closure
-- For 1D or 2D examples extra dimensions are resolved with 1 spatial grid point
-
 ** Other Changes **
-- Code now hosted on GitHub
-- Added starmap_init.m that sets up variables for starmap solver
-- Added 1D and 3D moment matrices to starmap_closure_pn.m and
-  starmap_closure_spn.m
-- StaRMAP website changed in all files
+- The software is now hosted on GitHub.
+- Links adapted in all files.
 
 =================================================================
 Version 1.5 --> Version 1.9  (03/13/2015)
