@@ -19,7 +19,7 @@ function starmap_2d_ex_homogeneous
 %   StaRMAP project website:
 %   https://github.com/starmap-project
 
-%   For license, see file starmap_solver.m, as published on
+%   For license, see files LICENSE.txt or starmap_solver.m, as published on
 %   https://github.com/starmap-project/starmap
 
 %========================================================================

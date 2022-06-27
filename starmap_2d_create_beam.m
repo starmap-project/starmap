@@ -27,7 +27,7 @@ function starmap_2d_create_beam
 %   StaRMAP project website:
 %   https://github.com/starmap-project
 
-%   For license, see file starmap_solver.m, as published on
+%   For license, see files LICENSE.txt or starmap_solver.m, as published on
 %   https://github.com/starmap-project/starmap
 
 %========================================================================
@@ -102,7 +102,7 @@ fprintf(fid,'%s\n','%   ');
 fprintf(fid,'%s\n','%   StaRMAP project website:');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project');
 fprintf(fid,'%s\n','');
-fprintf(fid,'%s\n','%   For license, see file starmap_solver.m, as published on');
+fprintf(fid,'%s\n','%   For license, see files LICENSE.txt or starmap_solver.m, as published on');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project/starmap');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%========================================================================');
