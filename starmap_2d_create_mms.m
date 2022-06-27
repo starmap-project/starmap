@@ -18,7 +18,9 @@ function starmap_2d_create_mms
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -48,7 +50,7 @@ points = 2.^(4:7);      % Set number of grid points for convergence test.
 %========================================================================
 % Manufacture Solution
 %========================================================================
-syms t x y u absorb scatter0 scatterm solution q
+syms t x y solution
 % Assign variables
 n_mom = prob.n_mom;
 switch prob.closure
@@ -89,7 +91,12 @@ fprintf(fid,'%s\n','%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank,
 fprintf(fid,'%s\n','%                            Rujeko Chinomona');
 fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold');
 fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
-fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)');
+fprintf(fid,'%s\n','%   https://rujekoc.github.io/');
+fprintf(fid,'%s\n','%   ');
+fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).');
+fprintf(fid,'%s\n','%   ');
+fprintf(fid,'%s\n','%   StaRMAP project website:');
+fprintf(fid,'%s\n','%   https://github.com/starmap-project');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%   For license, see file starmap_solver.m, as published on');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project/starmap');

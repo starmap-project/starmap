@@ -14,7 +14,9 @@ function starmap_2d_ex_l2norm
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -40,12 +42,12 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);   % Configure data structures for starmap solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
 clf
-for k = 1:3              % Run test case with three different resolutions.
-    starmap_solver(par);                                 % Run solver.
-    prob.n = prob.n*2;                                % Double resolution.
-    par = starmap_init(prob); %Configure data structures for starmap solver
+for k = 1:3             % Run test case with three different resolutions.
+    starmap_solver(par);                                    % Run solver.
+    prob.n = prob.n*2;                               % Double resolution.
+    par = starmap_init(prob); %Configure data structures for starmap solver.
 end
 
 %========================================================================
@@ -60,13 +62,13 @@ function par = output(par,x,y,U,step)
 % Plotting routine, showing the 2D results and time-evolution of
 % discrete energy.
 t = par.t_plot(step);                                   % Time of output.
-phi_max = max(max(U{1}))+eps;                   % Axis/color scaling.
+phi_max = max(max(U{1}))+eps;                       % Axis/color scaling.
 h = [x{1}(2)-x{1}(1),y{1}(2)-y{1}(1)];                 % Grid resolution.
 sol_norm = sqrt(sum(cell2mat(cellfun(@(u)L2(u,par.prob.n,h),U,'Un',0))));
 if step==1, par.sol_norm = sol_norm;   % Create vector of solution norms.
-else, par.sol_norm(step) = sol_norm; end% Update vector of solution norms.
+else, par.sol_norm(step) = sol_norm; end%Update vector of solution norms.
 subplot(1,2,1)
-imagesc(x{1},y{1},U{1}')        % 2D plot of approximation.
+imagesc(x{1},y{1},U{1}')                      % 2D plot of approximation.
 axis xy equal tight, caxis([-1 1]*phi_max)
 title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,par.n_mom,t))
 colormap jet(255)

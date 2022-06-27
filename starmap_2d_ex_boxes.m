@@ -20,7 +20,9 @@ function starmap_2d_ex_boxes
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -47,12 +49,12 @@ prob = struct(...
 % Moment System Setup and Solver Execution
 %========================================================================
 clf
-prob.closure = 'P';  % Set to PN.
-par = starmap_init(prob);     % Configure data structures for starmap solver
-solP = starmap_solver(par);                      % Run solver with PN.
+prob.closure = 'P';                                          % Set to PN.
+par = starmap_init(prob); % Configure data structures for starmap solver.
+solP = starmap_solver(par);                         % Run solver with PN.
 prob.closure = 'SP';    % set to SPN.
-par = starmap_init(prob);     % Configure data structures for starmap solver
-solSP = starmap_solver(par);                    % Run solver with SPN.
+par = starmap_init(prob); % Configure data structures for starmap solver.
+solSP = starmap_solver(par);                       % Run solver with SPN.
 
 % Plot differences between PN and SPN
 subplot(1,2,2)

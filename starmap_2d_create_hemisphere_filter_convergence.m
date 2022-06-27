@@ -26,7 +26,9 @@ function starmap_2d_create_hemisphere_filter_convergence
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -111,7 +113,12 @@ fprintf(fid,'%s\n','%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank,
 fprintf(fid,'%s\n','%                            Rujeko Chinomona');
 fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold');
 fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
-fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)');
+fprintf(fid,'%s\n','%   https://rujekoc.github.io/');
+fprintf(fid,'%s\n','%   ');
+fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).');
+fprintf(fid,'%s\n','%   ');
+fprintf(fid,'%s\n','%   StaRMAP project website:');
+fprintf(fid,'%s\n','%   https://github.com/starmap-project');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%   For license, see file starmap_solver.m, as published on');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project/starmap');
@@ -253,7 +260,7 @@ function y = CoeffHemisphere(l,k,mu,phi)
 % Expansion coefficients for a hemisphere in angle pointing in
 % x-direction.
 if l==0, y = sqrt(pi);                        % Define zeros coefficient.
-elseif mod(l,2) && mod(k,2)   % Compute all other non-zero coefficients.
+elseif mod(l,2) && mod(k,2)    % Compute all other non-zero coefficients.
     % Compute integral from 0 to 1 of the legendre polynomial of order l.
     z1 = legendre(l-1,0);
     z2 = legendre(l+1,0);

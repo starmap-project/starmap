@@ -21,7 +21,9 @@ function starmap_2d_ex_lattice_filter_convergence
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -52,16 +54,16 @@ f_order = [2 4 8 16];                             % Orders of the filter.
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);  % Configure data structures for starmap solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
 
 fprintf('Warning: This may take some minutes...\n')
 fprintf('Running %s%d...\n',par.closure,par.n_mom)
-solution_true = starmap_solver(par);    % Compute reference solution.
+solution_true = starmap_solver(par);        % Compute reference solution.
 
 % Compute estimates from reference solution.
-n_sys = (prob.n_mom+1)*(prob.n_mom+2)/2;     % Number of system components.
+n_sys = (prob.n_mom+1)*(prob.n_mom+2)/2;   % Number of system components.
 moment_order = ceil(sqrt(2*(1:n_sys)+1/4)-3/2);           % Moment order.
-Moments = zeros(1,prob.n_mom+1);           % Moments of the same order and
+Moments = zeros(1,prob.n_mom+1);          % Moments of the same order and
 DiffXMoments = Moments;                               % spatial gradient.
 for i = 1:length(solution_true)
     index = moment_order(i)+1;
@@ -87,10 +89,10 @@ output_table([OrderMoments',OrderDiffXMoments'],cname,[],rname,text)
 E = zeros(length(f_order)+1,length(orders)); R = E;
 for k = 0:length(f_order)              % Loop over various filter orders.  
     if k == 0, prob.f_position = '';
-    else, prob.filter_order = f_order(k);     % Define order of the filter.
-        prob.f_position = 'substep';             % Define filter position.
+    else, prob.filter_order = f_order(k);   % Define order of the filter.
+        prob.f_position = 'substep';            % Define filter position.
         fprintf('Running FPN with filter order %d:\n',prob.filter_order);
-        prob.filterfunction = @exp_filter;       % Filter function defined
+        prob.filterfunction = @exp_filter;      % Filter function defined
     end                                                          % below.
     for l = 1:length(orders)   % Loop over order of moment approximation.
         prob.n_mom = orders(l);

@@ -5,6 +5,10 @@ function starmap_3d_ex_pointsource
 %   approximations to radiative transfer in 1D-3D geometry.
 %
 %   Example: Point Source benchmark test. 
+%   Via displaying the numerical solution along different rays, 
+%   this test case showcases the spatial approximation error to 
+%   rotational symmetry of the numerical method. One can see how 
+%   choosing a finer spatial grid will reduce that approximation error.
 %
 %   Remarks:
 %   1) Since the numerical scheme does not possess slope
@@ -22,7 +26,9 @@ function starmap_3d_ex_pointsource
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -90,5 +96,5 @@ plot(r,phixy,'b-','DisplayName','x>0,x=y,z=0'), hold on
 plot(r,phixyz,'k-','DisplayName','x>0,x=y=z'), hold off
 axis([0 max(x) [-1 1]*phi_max])
 legend('Location','SouthEast')
-title('Cuts at different points')
+title('Cuts along different rays')
 drawnow

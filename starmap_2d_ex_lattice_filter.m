@@ -15,7 +15,9 @@ function starmap_2d_ex_lattice_filter
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -44,12 +46,12 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-switch prob.filter                      % Filter function (defined below).
+switch prob.filter                     % Filter function (defined below).
     case 'exp', prob.filterfunction = @exp_filter;
     case 'spherical', prob.filterfunction = @spherical_spline_filter;
 end
-par = starmap_init(prob);  % Configure data structures for starmap solver
-starmap_solver(par)                 % moment matrices and run solver.
+par = starmap_init(prob); % Configure data structures for starmap solver.
+starmap_solver(par)                                         % Run solver.
 %========================================================================
 % Problem Specific Functions
 %========================================================================

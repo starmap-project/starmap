@@ -1,32 +1,34 @@
 function [moment_order,Mx,My,Mz] = starmap_closure_spn(n_mom,dim)
-  %STARMAP_CLOSURE_SPN
-  %   Creates SP_N moment system matrices, to be used by
-  %   STARMAP_SOLVER, a second order staggered grid finite
-  %   difference solver for linear hyperbolic moment
-  %   approximations to radiative transfer in 1D-3D geometry.
-  %   In 1D : Moment matrix stored in Mz. Mx and My are zero matrices.
-  %   In 2D : Moment matrices My (for x-coord) and Mz (for y-coord)
-  %           Mx is a zero matrix
-  %
-  %   The time-dependent SPN equations encoded here are
-  %   the ones given in
-  %   [Olbrant, Larsen, Frank, Seibold, JCP 238 (2013) 315-336].
-  %
-  %   Version 2.0
-  %   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
-  %                            Rujeko Chinomona
-  %   http://www.math.temple.edu/~seibold
-  %   https://www.scc.kit.edu/personen/martin.frank.php
-  %   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
-  %
-  %   StaRMAP project website:
-  %   https://github.com/starmap-project
+%STARMAP_CLOSURE_SPN
+%   Creates SP_N moment system matrices, to be used by
+%   STARMAP_SOLVER, a second order staggered grid finite
+%   difference solver for linear hyperbolic moment
+%   approximations to radiative transfer in 1D-3D geometry.
+%   In 1D : Moment matrix stored in Mz. Mx and My are zero matrices.
+%   In 2D : Moment matrices My (for x-coord) and Mz (for y-coord)
+%           Mx is a zero matrix
+%
+%   The time-dependent SPN equations encoded here are
+%   the ones given in
+%   [Olbrant, Larsen, Frank, Seibold, JCP 238 (2013) 315-336].
+%
+%   Version 2.0
+%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
+%                            Rujeko Chinomona
+%   http://www.math.temple.edu/~seibold
+%   https://www.scc.kit.edu/personen/martin.frank.php
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
+%
+%   StaRMAP project website:
+%   https://github.com/starmap-project
 
-  %   For license, see file starmap_solver.m, as published on
-  %   https://github.com/starmap-project/starmap
+%   For license, see file starmap_solver.m, as published on
+%   https://github.com/starmap-project/starmap
 
-  %========================================================================
-  switch dim
+%========================================================================
+switch dim
     case 1
     n_sys = n_mom+1;
     % Moment matrix
@@ -83,4 +85,4 @@ function [moment_order,Mx,My,Mz] = starmap_closure_spn(n_mom,dim)
     % Order of moments
     moment_order = [0:2:n_mom reshape([1;1;1]*((0:2:n_mom)+1),1,[])];
 
-  end
+end

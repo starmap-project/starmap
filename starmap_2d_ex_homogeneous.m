@@ -12,7 +12,9 @@ function starmap_2d_ex_homogeneous
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -51,11 +53,11 @@ for k = 1:numel(sigma)       % Loop over different material coefficients.
         % Reference solution
         prob.run = 1; prob.n_mom = 9;
         par = starmap_init(prob); % Configure data structures for starmap solver
-        starmap_solver(par)                             % Run solver.
+        starmap_solver(par)                                 % Run solver.
         % P_N closure
         prob.run = 2; prob.n_mom = j;
         par = starmap_init(prob);     % Configure data structures for starmap solver
-        starmap_solver(par)                             % Run solver.
+        starmap_solver(par)                                 % Run solver.
 
         if k==2&&any(j==[3 5]), axis(top_zoom), end%Activate zoom window.
         if save_figure

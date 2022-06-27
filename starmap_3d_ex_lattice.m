@@ -5,13 +5,17 @@ function starmap_3d_ex_lattice
 %   approximations to radiative transfer in 1D-3D geometry.
 %
 %   Example: 3D Lattice/Checkerboard geometry
+%   Remarks: The variable plottype gives an option to visualize a 3D
+%   isosurface or a volume slice plot. 
 %
 %   Version 2.0
 %   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -36,6 +40,7 @@ prob = struct(...
 't_plot',linspace(0,3.2,51),... % output times
 'output',@output ... % problem-specific output routine (defined below)
 );
+prob.plottype = 1; % 0=isosurface, 1=volume slices and 1D cross sections.
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
@@ -64,33 +69,37 @@ f =  (1-g)*1+g*0;
 
 function output(par,x,y,z,U,step)
 % Plotting routine
-figure(1)
-clf, isosurface(x,y,z,U,max(max(max(U)))*2e-3)
-axis equal, axis(par.ax)
-light('Position',[3.5 3.5 -7],'Style','infinite')    % Add light sources. 
-light('Position',[-7 3.5 3.5],'Style','infinite')
-xlabel('x'), ylabel('y'), zlabel('z')
-title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,...
-    par.n_mom,par.t_plot(step)))
+switch par.plottype
+    case 0
+    factor = 2e-3;                % Multiplication factor for isosurface.
+    clf, isosurface(x,y,z,U,max(max(max(U)))*factor)
+    axis equal, axis(par.ax)
+    light('Position',[3.5 3.5 -7],'Style','infinite')         % Add light 
+    light('Position',[-7 3.5 3.5],'Style','infinite')          % sources.
+    xlabel('x'), ylabel('y'), zlabel('z')
+    title([sprintf('%s with %s%d at t = %0.2f \n Isosurface at %0.2d', ...
+        par.name,par.closure,par.n_mom,par.t_plot(step),factor), ...
+        '$\times||U||_{\infty}$'],'Interpreter','latex')
+    drawnow
 
-figure(2)
-cax = [-7 0];                    % Colormap range used for log10 scaling.
-vneg = cax(1)-diff(cax)/254;        % Value assigned where U is negative.
-V = log10(max(U,1e-20));% Cap U s.t. U>0 and use logarithmic color scale.
-Vcm = max(V,cax(1));                      % Cap colormap plot from below.
-Vcm(U<0) = vneg;              % Assign special value where U is negative.
-xslice = 3.5; yslice = 3.5; zslice = 3.5;              % Slice locations.
-clf, subplot(1,3,1:2)
-slice(x,y,z,Vcm,xslice,yslice,zslice)       % Volume slice approximation.
-cm = jet(256); cm(1,:) = [1 1 1]*.5; % Change lowest color entry to gray.
-axis vis3d equal, colormap(cm), colorbar('ylim',cax)
-xlabel('x'), ylabel('y'), zlabel('z')
-title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,...
-    par.n_mom,par.t_plot(step)))
-subplot(1,3,3)
-plot(x,interp3(x,y,z,V,x*0+3.5,y,z))
-axis([par.ax(1:2) cax+[-1 1]*.1])
-title('Cut at x=3.5'), xlabel('x')
-drawnow
-
+    case 1
+    cax = [-7 0];                % Colormap range used for log10 scaling.
+    vneg = cax(1)-diff(cax)/254;    % Value assigned where U is negative.
+    V = log10(max(U,1e-20));% Cap U s.t. U>0 and use logarithmic color scale.
+    Vcm = max(V,cax(1));                  % Cap colormap plot from below.
+    Vcm(U<0) = vneg;          % Assign special value where U is negative.
+    xslice = 3.5; yslice = 3.5; zslice = 3.5;          % Slice locations.
+    clf, subplot(1,3,1:2)
+    slice(x,y,z,Vcm,xslice,yslice,zslice)   % Volume slice approximation.
+    cm = jet(256); cm(1,:) = [1 1 1]*.5; % Change lowest color entry to gray.
+    axis vis3d equal, colormap(cm), colorbar('ylim',cax)
+    xlabel('x'), ylabel('y'), zlabel('z')
+    title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,...
+        par.n_mom,par.t_plot(step)))
+    subplot(1,3,3)
+    plot(y,interp3(x,y,z,V,x,y*0+3.5,z))
+    axis([par.ax(1:2) cax+[-1 1]*.1])
+    title('Cut at y=3.5'), xlabel('y')
+    drawnow
+end
 

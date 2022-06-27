@@ -15,7 +15,9 @@ function starmap_1d_ex_gauss
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -29,7 +31,7 @@ function starmap_1d_ex_gauss
 prob = struct(...
 'name','1D Gaussian',... % name of example
 'closure','P',... % type of closure (can be 'P' or 'SP')
-'n_mom',20,... % order of moment approximation
+'n_mom',19,... % order of moment approximation
 'n',1000,... % number of grid cells
 'sigma_a',@sigma_a,... % absorption coefficient (defined below)
 'sigma_s0',@sigma_s0,... % isotropic scattering coefficient (def. below)
@@ -41,8 +43,8 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);     % Configure data structures for starmap solver
-starmap_solver(par);          % Run solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
+starmap_solver(par);                                        % Run solver.
 
 %-----------------------------------------------------------------------%
 

@@ -18,7 +18,9 @@ function starmap_2d_ex_gauss_filter_convergence
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -49,7 +51,7 @@ f_order = [2 4 8 16];                             % Orders of the filter.
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);     % Configure data structures for starmap solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
 
 fprintf('Warning: This may take some minutes...\n')
 fprintf('Running %s%d...\n',par.closure,par.n_mom)
@@ -60,15 +62,15 @@ for k = 0:length(f_order)              % Loop over various filter orders.
     if k == 0, par.f_position = '';
     else
         prob.filter_order = f_order(k);     % Define order of the filter.
-        prob.f_position = 'substep';             % Define filter position.
+        prob.f_position = 'substep';            % Define filter position.
         fprintf('Running FPN with filter order %d:\n',prob.filter_order);
-        prob.filterfunction = @exp_filter;       % Filter function defined
+        prob.filterfunction = @exp_filter;      % Filter function defined
     end                                                          % below.
     for l = 1:length(orders)   % Loop over order of moment approximation.
         prob.n_mom = orders(l);
         par = starmap_init(prob); %Configure data structures for starmap solver
         fprintf('Running %s%s%d...\n',par.closure_mod,par.closure,par.n_mom);
-        solution = starmap_solver(par);                 % Run solver.
+        solution = starmap_solver(par);                     % Run solver.
         for m = 1:length(solution)
             R(k+1,l) = R(k+1,l) + ...
                 sum(sum((solution(m).U-solution_true(m).U).^2));
@@ -77,8 +79,8 @@ for k = 0:length(f_order)              % Loop over various filter orders.
         for m = length(solution)+1:length(solution_true)
             E(k+1,l) = E(k+1,l)+sum(sum((solution_true(m).U).^2));
         end
-        R(k+1,l) = sqrt(R(k+1,l))/prob.n(1);    % Scaled L^2 error without
-        E(k+1,l) = sqrt(E(k+1,l))/prob.n(1);  % and with projection error.
+        R(k+1,l) = sqrt(R(k+1,l))/prob.n(1);   % Scaled L^2 error without
+        E(k+1,l) = sqrt(E(k+1,l))/prob.n(1); % and with projection error.
     end
 end
 OrderE = -diff(log(E),[],2)./(ones(size(E,1),1)*diff(log(orders)));

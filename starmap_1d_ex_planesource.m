@@ -17,7 +17,9 @@ function starmap_1d_ex_planesource
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0)
+%   https://rujekoc.github.io/
+%
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -44,8 +46,8 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);   % Configure data structures for starmap solver
-starmap_solver(par);        % Run solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
+starmap_solver(par);                                        % Run solver.
 
 %========================================================================
 % Problem Specific Functions
