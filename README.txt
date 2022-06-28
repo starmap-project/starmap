@@ -73,6 +73,7 @@ starmap_init.m                 Initializes data structures
                                for the solver file
 starmap_solver.m               The computational code
 ChangeLog.txt                  Changes from previous versions
+LICENSE.txt                    License file
 README.txt                     This file
 
 =================================================================
@@ -146,11 +147,13 @@ Filter: par.filterfunction:
 1D: (par,dt,k,x) or (par,dt,k,x,t)
 2D: (par,dt,k,x,y) or (par,dt,k,x,y,t)
 3D: (par,dt,k,x,y,z) or (par,dt,k,x,y,z,t)
-- Multiplication factor for decay coefficients.
-- Vector par.mom_order must exist if this function is specified.
-- If t not specified, the function is only evaluated once
-  (in the first time step).
-- Via par.f_position one can define whether the filter is applied
-  after each 'substep' or 'full' time-step ('' turns off the
-  filer).
+ - Multiplication factor for decay coefficients, reducing Gibbs
+   oscillations.
+ - Vector par.mom_order must exist if this function is
+   specified.
+ - If t not specified, the function is only evaluated once
+   (in the first time step).
+ - Via par.f_position one can define whether the filter is
+   applied after each 'substep' or 'full' time-step ('' turns
+   off the filter).
 =================================================================
