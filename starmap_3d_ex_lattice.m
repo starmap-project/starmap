@@ -68,7 +68,7 @@ f =  (1-g)*1+g*0;
 function output(par,x,y,z,U,step)
 clf
 subplot(1,6,1:2)
-isovalue = 2e-3*max(max(max(U)));   % Multiplication factor for isosurface.
+isovalue = 2e-3*max(max(max(U)));                 % Value for isosurface.
 isosurface(x,y,z,U,isovalue)
 grid on
 axis equal, axis(par.ax)
