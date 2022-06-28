@@ -5,8 +5,6 @@ function starmap_3d_ex_lattice
 %   approximations to radiative transfer in 1D-3D geometry.
 %
 %   Example: 3D Lattice/Checkerboard geometry
-%   Remarks: The variable plottype gives an option to visualize a 3D
-%   isosurface or a volume slice plot. 
 %
 %   Version 2.0
 %   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
@@ -40,7 +38,7 @@ prob = struct(...
 't_plot',linspace(0,3.2,51),... % output times
 'output',@output ... % problem-specific output routine (defined below)
 );
-prob.plottype = 1; % 0=isosurface, 1=volume slices and 1D cross sections.
+
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
@@ -68,38 +66,39 @@ g = (ceil((cx+cy)/2)*2==(cx+cy)).*(1<cx&cx<7&1<cy&cy-2*abs(cx-4)<4).*...
 f =  (1-g)*1+g*0;
 
 function output(par,x,y,z,U,step)
-% Plotting routine
-switch par.plottype
-    case 0
-    factor = 2e-3;                % Multiplication factor for isosurface.
-    clf, isosurface(x,y,z,U,max(max(max(U)))*factor)
-    axis equal, axis(par.ax)
-    light('Position',[3.5 3.5 -7],'Style','infinite')         % Add light 
-    light('Position',[-7 3.5 3.5],'Style','infinite')          % sources.
-    xlabel('x'), ylabel('y'), zlabel('z')
-    title([sprintf('%s with %s%d at t = %0.2f \n Isosurface at %0.2d', ...
-        par.name,par.closure,par.n_mom,par.t_plot(step),factor), ...
-        '$\times||U||_{\infty}$'],'Interpreter','latex')
-    drawnow
+clf
+subplot(1,6,1:2)
+isovalue = 2e-3*max(max(max(U)));   % Multiplication factor for isosurface.
+isosurface(x,y,z,U,isovalue)
+grid on
+axis equal, axis(par.ax)
+view(3)
+light('Position',[3.5 3.5 -7],'Style','infinite')    % Add light sources.
+light('Position',[-7 3.5 3.5],'Style','infinite')
+xlabel('x'), ylabel('y'), zlabel('z')
+title(sprintf('Isosurface at %0.2d',isovalue))
 
-    case 1
-    cax = [-7 0];                % Colormap range used for log10 scaling.
-    vneg = cax(1)-diff(cax)/254;    % Value assigned where U is negative.
-    V = log10(max(U,1e-20));% Cap U s.t. U>0 and use logarithmic color scale.
-    Vcm = max(V,cax(1));                  % Cap colormap plot from below.
-    Vcm(U<0) = vneg;          % Assign special value where U is negative.
-    xslice = 3.5; yslice = 3.5; zslice = 3.5;          % Slice locations.
-    clf, subplot(1,3,1:2)
-    slice(x,y,z,Vcm,xslice,yslice,zslice)   % Volume slice approximation.
-    cm = jet(256); cm(1,:) = [1 1 1]*.5; % Change lowest color entry to gray.
-    axis vis3d equal, colormap(cm), colorbar('ylim',cax)
-    xlabel('x'), ylabel('y'), zlabel('z')
-    title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,...
-        par.n_mom,par.t_plot(step)))
-    subplot(1,3,3)
-    plot(y,interp3(x,y,z,V,x,y*0+3.5,z))
-    axis([par.ax(1:2) cax+[-1 1]*.1])
-    title('Cut at y=3.5'), xlabel('y')
-    drawnow
-end
+subplot(1,6,3:5)
+cax = [-7 0];                    % Colormap range used for log10 scaling.
+vneg = cax(1)-diff(cax)/254;        % Value assigned where U is negative.
+V = log10(max(U,1e-20));% Cap U s.t. U>0 and use logarithmic color scale.
+Vcm = max(V,cax(1));                      % Cap colormap plot from below.
+Vcm(U<0) = vneg;              % Assign special value where U is negative.
+xslice = 3.5; yslice = 3.5; zslice = 3.5;              % Slice locations.
+slice(x,y,z,Vcm,xslice,yslice,zslice)       % Volume slice approximation.
+cm = jet(256); cm(1,:) = [1 1 1]*.5; % Change lowest color entry to gray.
+axis vis3d equal
+colormap(cm), colorbar('ylim',cax)
+caxis([vneg cax(2)])
+xlabel('x'), ylabel('y'), zlabel('z')
+title(sprintf('Volume slice planes at \n x=3.5, y=3.5, z=3.5'))
+
+subplot(1,6,6)
+plot(x,interp3(x,y,z,V,x,y*0+3.5,z*0+3.5))
+axis([par.ax(1:2) cax+[-1 1]*.1])
+title('Cut at y=z=3.5'), xlabel('x')
+sgtitle(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,...
+    par.n_mom,par.t_plot(step)))
+drawnow
+
 

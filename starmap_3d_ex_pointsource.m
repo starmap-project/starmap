@@ -85,11 +85,11 @@ axis vis3d equal, caxis([-1 1]*phi_max)
 title(sprintf('%s with %s%d at t = %0.2f',par.name,par.closure,par.n_mom,t))
 colormap jet(255); colorbar
 subplot(1,3,3)
-r = linspace(0,max(x),100); 
+r = linspace(0,max(x),200);
 % 1D cross sections
 phix = interp3(x,y,z,U,r,r*0,r*0);                         % x>0,y=0,z=0.
-phixy = interp3(x,y,z,U,r,r,r*0);                          % x>0,x=y,z=0.
-phixyz = interp3(x,y,z,U,r,r,r);                             % x>0,x=y=z.
+phixy = interp3(x,y,z,U,r/sqrt(2),r/sqrt(2),r*0);          % x>0,x=y,z=0.
+phixyz = interp3(x,y,z,U,r/sqrt(3),r/sqrt(3),r/sqrt(3));   % x>0,x=y=z>0.
 % Plot 1D cross sections.
 plot(r,phix,'r-','DisplayName','x>0,y=0,z=0'), hold on 
 plot(r,phixy,'b-','DisplayName','x>0,x=y,z=0'), hold on 
