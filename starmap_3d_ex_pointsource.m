@@ -55,7 +55,7 @@ prob = struct(...
 %========================================================================
 % Moment System Setup and Solver Execution
 %========================================================================
-par = starmap_init(prob);  % Configure data structures for starmap solver
+par = starmap_init(prob); % Configure data structures for starmap solver.
 starmap_solver(par)                                         % Run solver.
 %========================================================================
 % Problem Specific Functions
@@ -89,7 +89,7 @@ r = linspace(0,max(x),100);
 % 1D cross sections
 phix = interp3(x,y,z,U,r,r*0,r*0);                         % x>0,y=0,z=0.
 phixy = interp3(x,y,z,U,r,r,r*0);                          % x>0,x=y,z=0.
-phixyz = interp3(x,y,z,U,r,r,r);                           % x>0,x=y=z>0.
+phixyz = interp3(x,y,z,U,r,r,r);                             % x>0,x=y=z.
 % Plot 1D cross sections.
 plot(r,phix,'r-','DisplayName','x>0,y=0,z=0'), hold on 
 plot(r,phixy,'b-','DisplayName','x>0,x=y,z=0'), hold on 
