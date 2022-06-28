@@ -12,6 +12,14 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
+Appropriate references shall be given to the name of the Software
+(StaRMAP), the website of the Software 
+(https://github.com/starmap-project/starmap)
+and the appropriate research article(s) corresponding to the
+Software, in particular:
+B. Seibold, M. Frank, ACM Transactions on Mathematical Software,
+41(1) [4]. DOI: 10.1145/2590808 (http://arxiv.org/abs/1211.2205)
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,10 +28,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Appropriate references shall be given to the name of the Software
-(StaRMAP), the website of the Software
-(https://github.com/starmap-project/starmap)
-and the appropriate research article(s) corresponding to the
-Software, in particular:
-B. Seibold, M. Frank, ACM Transactions on Mathematical Software,
-41(1) [4]. DOI: 10.1145/2590808 (http://arxiv.org/abs/1211.2205)
+
