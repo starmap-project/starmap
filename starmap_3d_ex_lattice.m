@@ -34,8 +34,8 @@ prob = struct(...
 'source',@source,... % initial conditions (defined below)
 'ax',[0 7 0 7 0 7],... % coordinates of computational domain
 'n',[1 1 1]*40,... % numbers of grid cells in each coordinate direction
-'bc',[0 0 0],... % type of boundary cond. (0 = periodic, 1 = extrapolation)
-'t_plot',linspace(0,3.2,51),... % output times
+'bc',[1 1 1],... % type of boundary cond. (0 = periodic, 1 = extrapolation)
+'t_plot',linspace(0,2.8,51),... % output times
 'output',@output ... % problem-specific output routine (defined below)
 );
 
@@ -73,8 +73,9 @@ isosurface(x,y,z,U,isovalue)
 grid on
 axis equal, axis(par.ax)
 view(3)
-light('Position',[3.5 3.5 -7],'Style','infinite')    % Add light sources.
-light('Position',[-7 3.5 3.5],'Style','infinite')
+camlight
+% light('Position',[3.5 3.5 -7],'Style','infinite')    % Add light sources.
+% light('Position',[-7 3.5 3.5],'Style','infinite')
 xlabel('x'), ylabel('y'), zlabel('z')
 title(sprintf('Isosurface at %0.2d',isovalue))
 

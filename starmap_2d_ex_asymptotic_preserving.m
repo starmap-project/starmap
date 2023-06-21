@@ -17,7 +17,7 @@ function starmap_2d_ex_asymptotic_preserving
 %   case where the spatial grid does not resolve the small parameter.
 %   Moreover, the computational cost scales with 1/epsilon for the
 %   hyperbolic time step, while the parabolic time step's cost is
-%   indepdendent of epsilon.
+%   independent of epsilon.
 %
 %   Version 2.0
 %   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
