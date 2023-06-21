@@ -66,7 +66,7 @@ switch par.closure                      % Define closure matrix function.
     case 'SP', closurefun = 'starmap_closure_spn';
 end
 % Compute moment matrices.
-[par.mom_order,par.Mx,par.My,par.Mz] = feval(closurefun,par.n_mom,par.dim);
+[par.mom_order,par.Mx,par.My,par.Mz] = feval(closurefun,par.n_mom,par.dim); %#ok<FVAL>
 n_sys = length(par.Mz);                    % Number of system components.
 
 %========================================================================
@@ -229,6 +229,7 @@ if ~isfield(par,'tfinal'),   par.tfinal = par.t_plot(end); end
 if ~isfield(par,'mom_output'), par.mom_output = 1; end % Moments plotted.
 if isfield(par,'filterfunction'), par.closure_mod = 'F'; % Closure modifier
 else, par.closure_mod = '';end
+if ~isfield(par,'int_weight'), par.int_weight = @(m,t)0; end % NEEDS COMMENTS
 
 %========================================================================
 % Utility functions

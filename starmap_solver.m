@@ -136,7 +136,7 @@ sg = unique(sg(2:end,:),'rows')';            % indices with moment order.
 % Initialize field variables
 sS = cell(2,2,2,max(par.mom_order));                 % Scattering fields.
 sT = sS; ET = sS;
-U = cell(1,n_sys); dxU = U; dyU = U; dzU = U; Q = U;          % Unknowns.
+U = cell(1,n_sys); dxU = U; dyU = U; dzU = U; Q = U; Int = Q;  % Unknowns.
 for j = 1:n_sys                         % If initial condition only three
     U{j} = X{gtx(j),gty(j),gtz(j)}*0+...                 % arguments, set
         capargs(par.ic,X{gtx(j),gty(j),gtz(j)},...   % all higher moments
@@ -154,6 +154,26 @@ if flag_filter
     end
     f_sg = [gtx;gty;gtz;f_mom_order]';      % Staggered grid indices with
     f_sg = unique(f_sg(2:end,:),'rows')';                 % moment order.
+end
+
+% Initialize density function.
+if ~isfield(par,'density') % If no density specified set to 1.
+    Rho{1,1,1} = 1; Rho{1,2,1} = 1; Rho{1,1,2} = 1; Rho{1,2,2} = 1;
+    Rho{2,1,1} = 1; Rho{2,2,1} = 1; Rho{2,1,2} = 1; Rho{2,2,2} = 1;
+    density_extendx = {1 1}; density_extendy = {1 1}; density_extendz = {1 1};
+else
+    Rho = cell(2,2,2); rho_min = 1;
+    for i = 1:2
+        for j = 1:2
+            for k = 1:2
+                Rho{i,j,k} = X{i,j,k}*0 + par.density(X{i,j,k},Y{i,j,k},Z{i,j,k},par);
+                rho_min = min(rho_min,min(min(min((abs(Rho{i,j,k})))))); % Minimal density.
+            end
+        end
+    end
+    density_extendx = extendx; density_extendy = extendy; density_extendz = extendz;
+    % Adjust time step        
+    % dt = rho_min*dt;
 end
 
 %========================================================================
@@ -312,39 +332,51 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
         case 1         % Half step with (111), (221), (212), (122) grids.
         for j = c111                         % Compute update from (111).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{1},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{1},:,:)./...
+                    Rho{1,1,1}(density_extendx{1},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{1},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{1},:)./...
+                    Rho{1,1,1}(:,density_extendy{1},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{1}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{1})./...
+                Rho{1,1,1}(:,:,density_extendz{1}),[],3)/h(3);
         end
         for j = c221                         % Compute update from (221).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{2},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{2},:,:)./...
+                    Rho{2,2,1}(density_extendx{2},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{2},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{2},:)./...
+                    Rho{2,2,1}(:,density_extendy{2},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{1}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{1})./...
+                Rho{2,2,1}(:,:,density_extendz{1}),[],3)/h(3);        
         end
         for j = c212                         % Compute update from (212).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{2},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{2},:,:)./...
+                    Rho{2,1,2}(density_extendx{2},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{1},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{1},:)./...
+                    Rho{2,1,2}(:,density_extendy{1},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{2}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{2})./...
+                Rho{2,1,2}(:,:,density_extendz{2}),[],3)/h(3);
         end
         for j = c122                         % Compute update from (122).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{1},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{1},:,:)./...
+                    Rho{1,2,2}(density_extendx{1},:,:),[],1)/h(1);  
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{2},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{2},:)./...
+                    Rho{1,2,2}(:,density_extendy{2},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{2}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{2})./...
+                Rho{1,2,2}(:,:,density_extendz{2}),[],3)/h(3);
         end
         for j = [c211 c121 c112 c222]       % Update components on grids.
             W = -sumcell([dxU(Ix{j}),dyU(Iy{j}),dzU(Iz{j})],...
@@ -360,39 +392,51 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
         case 2         % Half step with (211), (121), (112), (222) grids.
         for j = c222                         % Compute update from (222).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{2},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{2},:,:)./...
+                    Rho{2,2,2}(density_extendx{2},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{2},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{2},:)./...
+                    Rho{2,2,2}(:,density_extendy{2},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{2}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{2})./...
+                Rho{2,2,2}(:,:,density_extendz{2}),[],3)/h(3);
         end
         for j = c112                         % Compute update from (112).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{1},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{1},:,:)./...
+                    Rho{1,1,2}(density_extendx{1},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{1},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{1},:)./...
+                    Rho{1,1,2}(:,density_extendy{1},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{2}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{2})./...
+                Rho{1,1,2}(:,:,density_extendz{2}),[],3)/h(3);
         end
         for j = c121                         % Compute update from (121).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{1},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{1},:,:)./...
+                    Rho{1,2,1}(density_extendx{1},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{2},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{2},:)./...
+                    Rho{1,2,1}(:,density_extendy{2},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{1}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{1})./...
+                Rho{1,2,1}(:,:,density_extendz{1}),[],3)/h(3);
         end
         for j = c211                         % Compute update from (211).
             if ~isempty(Ix{j})
-                dxU{j} = diff(U{j}(extendx{2},:,:),[],1)/h(1);
+                dxU{j} = diff(U{j}(extendx{2},:,:)./...
+                    Rho{2,1,1}(density_extendx{2},:,:),[],1)/h(1);
             end
             if ~isempty(Iy{j})
-                dyU{j} = diff(U{j}(:,extendy{1},:),[],2)/h(2);
+                dyU{j} = diff(U{j}(:,extendy{1},:)./...
+                    Rho{2,1,1}(:,density_extendy{1},:),[],2)/h(2);
             end
-            dzU{j} = diff(U{j}(:,:,extendz{1}),[],3)/h(3);
+            dzU{j} = diff(U{j}(:,:,extendz{1})./...
+                Rho{2,1,1}(:,:,density_extendz{1}),[],3)/h(3);
         end
         for j = [c111 c221 c212 c122]       % Update components on grids.
             W = -sumcell([dxU(Ix{j}),dyU(Iy{j}),dzU(Iz{j})],...
@@ -420,6 +464,11 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
         end
     end
     cputime(1) = cputime(1)+toc;
+    % Compute weighted time integral using the trapezoidal rule.
+    weight = par.int_weight(1:n_sys,t-dt/2)*dt/(1+(t==dt||t==par.tfinal));
+    for j = 1:n_sys
+        Int{j} = Int{j}+U{j}.*weight(j);
+    end
     % Plotting
     tic
     while t>=par.t_plot(plot_count)-1e-14  % If current time has exceeded
@@ -495,7 +544,7 @@ if nargout
             end
             output = struct('x',y(gty),'y',z(gtz),'U',U);
         otherwise
-           output = struct('x',x(gtx),'y',y(gty),'z',z(gtz),'U',U);
+           output = struct('x',x(gtx),'y',y(gty),'z',z(gtz),'U',U,'Int',Int);
     end
 end
 
