@@ -136,7 +136,8 @@ sg = unique(sg(2:end,:),'rows')';            % indices with moment order.
 % Initialize field variables
 sS = cell(2,2,2,max(par.mom_order));                 % Scattering fields.
 sT = sS; ET = sS;
-U = cell(1,n_sys); dxU = U; dyU = U; dzU = U; Q = U; Int = Q;  % Unknowns.
+U = cell(1,n_sys); dxU = U; dyU = U; dzU = U; Q = U;  % Unknowns.
+
 for j = 1:n_sys                         % If initial condition only three
     U{j} = X{gtx(j),gty(j),gtz(j)}*0+...                 % arguments, set
         capargs(par.ic,X{gtx(j),gty(j),gtz(j)},...   % all higher moments
@@ -155,6 +156,9 @@ if flag_filter
     f_sg = [gtx;gty;gtz;f_mom_order]';      % Staggered grid indices with
     f_sg = unique(f_sg(2:end,:),'rows')';                 % moment order.
 end
+
+% Initialize integral with zeros. SIZING MIGHT BE OFF IF NOT DEFINED HERE
+Int = Q;
 
 % Initialize density function.
 if ~isfield(par,'density') % If no density specified set to 1.
