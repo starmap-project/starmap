@@ -10,14 +10,15 @@ function output = starmap_solver(par)
 %   zeroth moment and its spatial coordinates into the struct
 %   OUTPUT.
 %
-%   Version 2.0
-%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
+%   Version 2.01 (med)
+%   Copyright (c) 09/27/2024 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
 %   https://rujekoc.github.io/
 %
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).,
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v2.01),
+%                 Pia Stammer (v2.01)
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
@@ -157,7 +158,7 @@ if flag_filter
     f_sg = unique(f_sg(2:end,:),'rows')';                 % moment order.
 end
 
-% Initialize integral with zeros. SIZING MIGHT BE OFF IF NOT DEFINED HERE
+% Initialize integral with zeros. 
 Int = Q;
 
 % Initialize density function.
@@ -177,7 +178,7 @@ else
     end
     density_extendx = extendx; density_extendy = extendy; density_extendz = extendz;
     % Adjust time step        
-    % dt = rho_min*dt;
+    dt_hyp = rho_min*dt_hyp;
 end
 
 %========================================================================
@@ -186,6 +187,7 @@ end
 par.t_plot = [par.t_plot inf]; plot_count = 1;
 cputime = zeros(1,3);
 t = 0; dt = 0; step_count = 0;
+tvals = []; tvals = [tvals, t];
 while t<par.tfinal      % Loop until final time is reached (or exceeded).
     % Evaluate material parameters and determine maximal time step
     tic
@@ -258,6 +260,7 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
                     Z{sg(1,j),sg(2,j),sg(3,j)},sg(4,j),t+dt);
             end
         end
+
         if any(evaluate) % Total sigma_t^m = sigma_a+sigma_s^0-sigma_s^m.
             for j = 1:size(sg,2)             % (Re)compute, if any of the
                 sT{sg(1,j),sg(2,j),sg(3,j),sg(4,j)} = ...         % above
@@ -265,6 +268,7 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
                     sS{sg(1,j),sg(2,j),sg(3,j),sg(4,j)};
             end
         end
+
         % Determine material parameters used to conduct time step
         if k>0                                  % If not very first time.
             sA1 = (sA0{1,1}+sA{1,1})/2; sT1 = sT;               % Average
@@ -274,6 +278,7 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
                     sT{sg(1,j),sg(2,j),sg(3,j),sg(4,j)})/2;   % and t+dt.
             end
         end
+
         if flag_check_stab % If stability investigations were done above.
             % Check whether avg. material parameters are stable with dt
             decay = ones(1,n_sys)*min(min(sA1));      % Smallest sigma_a.
@@ -287,7 +292,7 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
                 sA1 = sA0{1,1,1}; sT1 = sT0;   % to parameters at time t.
             end
         end
-    end
+    end  %%end for k
     % Compute decay terms
     if t==0||any(time_dependent)                 % Recompute decay terms.
         EA = expm1div(-sA1*dt/2);         % Decay term for zeroth moment.
@@ -296,14 +301,18 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
                 expm1div(-sT1{sg(1,j),sg(2,j),sg(3,j),sg(4,j)}*dt/2);
         end
     end
-    % Time increment
-    t = t+dt; step_count = step_count+1;
+
+    % Time increment 
+    t = t+dt; step_count = step_count+1; tvals = [tvals, t];
+    
+
     % Evaluate source
     for j = par.source_ind     % Source: evaluate only active components.
         Q{j} = capargs(par.source,X{gtx(j),gty(j),gtz(j)},...  % Evaluate
             Y{gtx(j),gty(j),gtz(j)},Z{gtx(j),gty(j),gtz(j)},...  % source
             t-dt/2,j);                            % at half-time of step.
     end
+
     % Evaluate filter function
     if (t==dt||nargin(par.filterfunction)>6)&&flag_filter  % Evaluate, if
         for j = 1:size(f_sg,2)       % first time step or time-dependent.
@@ -385,9 +394,12 @@ while t<par.tfinal      % Loop until final time is reached (or exceeded).
         for j = [c211 c121 c112 c222]       % Update components on grids.
             W = -sumcell([dxU(Ix{j}),dyU(Iy{j}),dzU(Iz{j})],...
                 [par.Mx(j,Ix{j}),par.My(j,Iy{j}),par.Mz(j,Iz{j})]);
+
+
             U{j} = U{j}+dt/2*(W+Q{j}-...
                 sT1{gtx(j),gty(j),gtz(j),par.mom_order(j)}.*U{j}).*...
                 ET{gtx(j),gty(j),gtz(j),par.mom_order(j)};
+
             if strcmp(par.f_position,'substep')       % Multiplication by
                 U{j} = U{j}.*filterTerm{gtx(j),gty(j),...       % substep
                     gtz(j),f_mom_order(j),k};              % filter term.

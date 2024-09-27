@@ -9,20 +9,18 @@ function par = starmap_init(prob)
 %   match dimensionality.
 %   A copy of user-defined prob is attached to output structure par.
 %
-%   Version 2.0
-%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
+%   Version 2.01 (med)
+%   Copyright (c) 09/27/2024 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
 %   https://rujekoc.github.io/
 %
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0).
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v2.01),
+%                 Pia Stammer (v2.01)
 %
 %   StaRMAP project website:
 %   https://github.com/starmap-project
-
-%   For license, see files LICENSE.txt or starmap_solver.m, as published on
-%   https://github.com/starmap-project/starmap
 
 %========================================================================
 % Set struct
