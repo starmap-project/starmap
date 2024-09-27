@@ -152,6 +152,7 @@ fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','% Modify functions and run solver.');
 fprintf(fid,'%s\n','E_CutOff = max(par.E_plot);');
 fprintf(fid,'%s\n','par.t_plot = Energy2Time(par.E_plot,E_CutOff);');
+fprintf(fid,'%s\n','par.tfinal = par.t_plot(end-1);');
 fprintf(fid,'%s\n','par.sigma_s0 = @(x,y,z,t)par.sigma_s0(x,y,z,Time2Energy(t,E_CutOff));');
 fprintf(fid,'%s\n','par.sigma_sm = @(x,y,z,m,t)par.sigma_sm(x,y,z,m,Time2Energy(t,E_CutOff));');
 fprintf(fid,'%s\n','par.int_weight = @(m,t)StoppingPower(Time2Energy(t,E_CutOff)).*(m==1);');

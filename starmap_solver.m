@@ -560,7 +560,8 @@ if nargout
             end
             output = struct('x',y(gty),'y',z(gtz),'U',U);
         otherwise
-           output = struct('x',x(gtx),'y',y(gty),'z',z(gtz),'U',U,'Int',Int);
+
+           output = struct('x',x(gtx),'y',y(gty),'z',z(gtz),'U',U,'Int',Int,'Rho',{Rho});
     end
 end
 
