@@ -6,16 +6,16 @@ function starmap_create_lung_cttest
 %   "KiT-RT: An Extendable Framework for Radiative Transfer and Therapy."
 %   https://doi.org/10.1145/3630001
 % 
-%   Version 2.01 (med)
-%   Copyright (c) 09/27/2024 Benjamin Seibold, Martin Frank, and
+%   Version 1.0-med
+%   Copyright (c) 09/29/2024 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
 %   https://rujekoc.github.io/
-%
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v2.01),
-%                 Pia Stammer (v2.01)
-%
+%   
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v1.0-med).
+%                     Pia Stammer (v1.0-med).
+%   
 %   StaRMAP project website:
 %   https://github.com/starmap-project
 
@@ -34,7 +34,7 @@ prob = struct(...
 'bc',[1 1 1],... % Type of boundary cond. (0 = periodic, 1 = extrapolation)
 'E_plot',linspace(20,0,5)... % Output energies.
 );
-
+xslice = 2.5; yslice = 5;   % cross-section points
 %========================================================================
 % Initial Beam Parameters 
 %========================================================================
@@ -124,15 +124,15 @@ fprintf(fid,'%s\n','%   https://doi.org/10.1145/3630001');
 fprintf(fid,'%s\n','%');
 fprintf(fid,'%s%s%s\n','%   Created by the file ',mfilename,'.m');
 fprintf(fid,'%s\n','%');
-fprintf(fid,'%s\n','%   Version 2.01 (med)');
-fprintf(fid,'%s\n','%   Copyright (c) 09/28/2024 Benjamin Seibold, Martin Frank, and');
+fprintf(fid,'%s\n','%   Version 1.0-med');
+fprintf(fid,'%s\n','%   Copyright (c) 09/29/2024 Benjamin Seibold, Martin Frank, and');
 fprintf(fid,'%s\n','%                            Rujeko Chinomona');
 fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold');
 fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
 fprintf(fid,'%s\n','%   https://rujekoc.github.io/');
 fprintf(fid,'%s\n','%   ');
-fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v2.01).');
-fprintf(fid,'%s\n','%                     Pia Stammer (v2.01).');
+fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v1.0-med).');
+fprintf(fid,'%s\n','%                     Pia Stammer (v1.0-med).');
 fprintf(fid,'%s\n','%   ');
 fprintf(fid,'%s\n','%   StaRMAP project website:');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project');
@@ -175,31 +175,57 @@ fprintf(fid,'%s\n','par.image_matrix = processImage(par.image_name);');
 fprintf(fid,'%s\n','figure');
 fprintf(fid,'%s\n','solution = starmap_solver(par);');
 fprintf(fid,'%s\n','');
+fprintf(fid,'%s\n','%========================================================================');
+fprintf(fid,'%s\n','% Dose computation and plotting');
+fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','% Compute and plot depth dose'); 
 fprintf(fid,'%s\n','x = solution(1).x; y = solution(1).y; z = solution(1).z;');
 fprintf(fid,'%s\n','Dose = solution(1).Int./solution(1).Rho{1,1,1};');
-fprintf(fid,'%s\n',['figure, plot(x,Dose(:,',num2str(ceil(prob.n(2)/2)),',',num2str(ceil(prob.n(3)/2)),'))']);
-fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''dose'')');
-fprintf(fid,'%s\n','title([par.name,'': depth dose''])');
-fprintf(fid,'%s\n','');
+fprintf(fid,'%s\n','Dose = Dose/max(Dose(:));  % normalized dose');
+fprintf(fid,'%s\n',['xslice = ', num2str(xslice), '; yslice = ',num2str(yslice),';']);
+fprintf(fid,'%s\n','% Store data to regenerate plots later');
 fprintf(fid,'%s\n','ax = par.ax; save("DoseMatrix.mat","Dose","x","y","ax");');
-fprintf(fid,'%s\n','% Plot dose overlay on CT scan');
 fprintf(fid,'%s\n','ctImage = imread("Lung_square.png");  % Load ct scan');
 fprintf(fid,'%s\n','if size(ctImage, 3) == 3,ctImage = rgb2gray(ctImage);end % Convert to gray');
 fprintf(fid,'%s\n','[m,n] = size(ctImage); % size of image ');
-fprintf(fid,'%s\n','figure;');
-fprintf(fid,'%s\n','imshow(ctImage, [], "InitialMagnification", "fit");  % Display CT image');
-fprintf(fid,'%s\n','colormap(gray);         % Grayscale colormap');
-fprintf(fid,'%s\n','hold on;');
 fprintf(fid,'%s\n','xq = linspace(ax(1),ax(2),m); yq = linspace(ax(3),ax(4),n);');
 fprintf(fid,'%s\n','[X,Y] = meshgrid(x,y);[XQ,YQ] = meshgrid(xq,yq);');
 fprintf(fid,'%s\n','doseMatrix = interp2(X,Y,Dose,XQ,YQ);');
-fprintf(fid,'%s\n','doseLevels = 5:5:ceil(m/2); % Define dose levels for contour lines');
-fprintf(fid,'%s\n','contour(doseMatrix, doseLevels, "LineColor", "r", "LineWidth", 1.5);');
-fprintf(fid,'%s\n','xlabel("X"); ylabel("Y");');
-fprintf(fid,'%s\n','title("Lung CT Scan with Dose Isolines");');
+fprintf(fid,'%s\n','figure;');
+fprintf(fid,'%s\n','ax1 = axes; imagesc(xq, yq, ctImage, ''Parent'', ax1); axis equal;');
+fprintf(fid,'%s\n','set(gca, ''YTickLabel'', flip(get(gca, ''YTick'')));');
+fprintf(fid,'%s\n','colormap(ax1, gray);  % Grayscale colormap for the image');
+fprintf(fid,'%s\n','xlabel("x"); ylabel("y");');
+fprintf(fid,'%s\n','title("Lung CT Scan with Dose Penetration");');
+fprintf(fid,'%s\n','hold on;');
+fprintf(fid,'%s\n','ax2 = axes;  % Create another set of axes for the contour plot');
+fprintf(fid,'%s\n','hold(ax2, ''on'');');
+fprintf(fid,'%s\n','contour(ax2, xq, yq, doseMatrix'', linspace(0, max(doseMatrix(:)),20), ''LineWidth'', 1.5);');
+fprintf(fid,'%s\n','colormap(ax2, jet);  % Colored colormap for the contour plot');
+fprintf(fid,'%s\n','colorbar(ax2);  % Add colorbar for the contour plot');
+fprintf(fid,'%s\n','% Link the axes and set transparency for the second axes');
+fprintf(fid,'%s\n','linkaxes([ax1, ax2]);');
+fprintf(fid,'%s\n','ax2.Color = ''none'';  % Make ax2 transparent so ax1 can be seen');
+fprintf(fid,'%s\n','ax2.XColor = ''none'';  % Hide x-axis for contour axes');
+fprintf(fid,'%s\n','ax2.YColor = ''none'';  % Hide y-axis for contour axes');
+fprintf(fid,'%s\n','ax2.Position = ax1.Position;  % Align the two axes');
+fprintf(fid,'%s\n','% Add vertical and horizontal lines');
+fprintf(fid,'%s\n','line([xslice, xslice], ylim, ''Color'', ''r'', ''LineWidth'', 2, ''LineStyle'', ''--'', ''Parent'', ax1);  % Vertical line');
+fprintf(fid,'%s\n','line(xlim, [ax(4)-yslice, ax(4)-yslice], ''Color'', ''b'', ''LineWidth'', 2, ''LineStyle'', ''--'', ''Parent'', ax1);     % Horizontal line');
+fprintf(fid,'%s\n','% Add labels for the lines');
+fprintf(fid,'%s\n','text(xslice, ax(4), [''x = '', num2str(xslice), ''cm''], ''VerticalAlignment'', ''bottom'', ''HorizontalAlignment'', ''right'', ''Color'', ''r'', ''FontSize'', 12, ''Parent'', ax1);');
+fprintf(fid,'%s\n','text(ax(2), ax(4)-yslice, [''y = '', num2str(yslice), ''cm''], ''VerticalAlignment'', ''bottom'', ''HorizontalAlignment'', ''left'', ''Color'', ''b'', ''FontSize'', 12, ''Parent'', ax1);');
 fprintf(fid,'%s\n','hold off;');
-fprintf(fid,'%s\n','');
+fprintf(fid,'%s\n','% Dose along different slices');
+fprintf(fid,'%s\n','dose_yslice = interp2(X,Y,Dose'',x,yslice);');
+fprintf(fid,'%s\n','dose_xslice = interp2(X,Y,Dose'',xslice,y);');
+fprintf(fid,'%s\n','figure;');
+fprintf(fid,'%s\n','subplot(1,2,1), plot(y,dose_xslice,''LineWidth'',1.5)');
+fprintf(fid,'%s\n','xlabel(''y [cm]''), ylabel(''normalized dose'')');
+fprintf(fid,'%s\n','title([''Slice at x = '',num2str(xslice), '' cm''])');
+fprintf(fid,'%s\n','subplot(1,2,2), plot(x,dose_yslice,''LineWidth'',1.5)');
+fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''normalized dose'')');
+fprintf(fid,'%s\n','title([''Slice at y = '',num2str(yslice), '' cm''])');
 fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','% Problem Specific Functions');
 fprintf(fid,'%s\n','%========================================================================');
@@ -235,13 +261,17 @@ fprintf(fid,'%s\n','function f = StoppingPower(E)');
 fprintf(fid,'%s\n','% Stopping Power.');
 fprintf(fid,'%s\n',['f = feval(',func2str(StoppingPower),',E);']);
 fprintf(fid,'%s\n','');
+fprintf(fid,'%s\n','%========================================================================');
+fprintf(fid,'%s\n','% Output function.');
+fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','function output(par,x,y,z,U,step)');
 fprintf(fid,'%s\n','% Output function showing the progress.');
 fprintf(fid,'%s\n','E = par.E_plot(step);');
 fprintf(fid,'%s\n','fprintf(''Energy:%12.2fMeV\n'',E)');
-fprintf(fid,'%s\n',['plot(x,U(:,',num2str(ceil(prob.n(2)/2)),',',num2str(ceil(prob.n(3)/2)),')), hold on']);
+fprintf(fid,'%s\n','plot(x,U(:,ceil(par.n(2)/2),ceil(par.n(3)/2))'',''DisplayName'',[''E = '',num2str(E),''MeV''], ''LineWidth'',1.5)');
+fprintf(fid,'%s\n','hold on; legend');
 fprintf(fid,'%s\n','title([par.name,'': E = '',num2str(E),''MeV'']);');
-fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''zeroth-moment'')');
+fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''Radiative Intensity'')');
 fprintf(fid,'%s\n','drawnow');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%========================================================================');
@@ -249,13 +279,13 @@ fprintf(fid,'%s\n','% Energy transformation.');
 fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','function E = Time2Energy(t,E_CutOff)');
 fprintf(fid,'%s\n','% Transformation: Time to energy.');
-fprintf(fid,'%s\n','E = max(0,energyTansform(energyTansform(E_CutOff,0)-t'',1))'';');
+fprintf(fid,'%s\n','E = max(0,energyTransform(energyTransform(E_CutOff,0)-t'',1))'';');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','function t = Energy2Time(E,E_CutOff)');
 fprintf(fid,'%s\n','% Transformation: Energy to time.');
-fprintf(fid,'%s\n','t = max(0,energyTansform(E_CutOff-E'',0))'';');
+fprintf(fid,'%s\n','t = max(0,energyTransform(E_CutOff-E'',0))'';');
 fprintf(fid,'%s\n','');
-fprintf(fid,'%s\n','function TE = energyTansform(E,inv)');
+fprintf(fid,'%s\n','function TE = energyTransform(E,inv)');
 fprintf(fid,'%s\n','% Transform the energy using linear interpolation.');
 fprintf(fid,'%s\n','E_tab = [');
 fprintf(fid,'%12.8f\n',E_tab);

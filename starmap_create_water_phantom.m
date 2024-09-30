@@ -11,15 +11,16 @@ function starmap_create_water_phantom
 %   that can later be changed in the generated example file.
 %   This routine is specific to the PN equations.
 %
-%   Version 2.01
-%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and
+%   Version 1.0-med
+%   Copyright (c) 09/29/2024 Benjamin Seibold, Martin Frank, and
 %                            Rujeko Chinomona
 %   http://www.math.temple.edu/~seibold
 %   https://www.scc.kit.edu/personen/martin.frank.php
 %   https://rujekoc.github.io/
-%
-%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v2.01).
-%
+%   
+%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v1.0-med).
+%                     Pia Stammer (v1.0-med).
+%   
 %   StaRMAP project website:
 %   https://github.com/starmap-project
 
@@ -100,7 +101,7 @@ end
 %========================================================================
 % Write Example File
 %========================================================================
-function_name = 'starmap_ex_water_phantom_auto';
+function_name = 'starmap_1d_ex_water_phantom_auto';
 fprintf('Writing example file %s.',[function_name,'.m']);
 fid = fopen([function_name,'.m'],'w');
 fprintf(fid,'function %s\n',function_name);
@@ -111,14 +112,15 @@ fprintf(fid,'%s\n','%   approximations to radiative transfer in 3D geometry.');
 fprintf(fid,'%s\n','%');
 fprintf(fid,'%s%s%s\n','%   Created by the file ',mfilename,'.m');
 fprintf(fid,'%s\n','%');
-fprintf(fid,'%s\n','%   Version 2.01');
-fprintf(fid,'%s\n','%   Copyright (c) 06/28/2022 Benjamin Seibold, Martin Frank, and');
+fprintf(fid,'%s\n','%   Version 1.0-med');
+fprintf(fid,'%s\n','%   Copyright (c) 09/29/2024 Benjamin Seibold, Martin Frank, and');
 fprintf(fid,'%s\n','%                            Rujeko Chinomona');
 fprintf(fid,'%s\n','%   http://www.math.temple.edu/~seibold');
 fprintf(fid,'%s\n','%   https://www.scc.kit.edu/personen/martin.frank.php');
 fprintf(fid,'%s\n','%   https://rujekoc.github.io/');
 fprintf(fid,'%s\n','%   ');
-fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.01).');
+fprintf(fid,'%s\n','%   Contributers: Edgar Olbrant (v1.0), Kerstin Kuepper (v1.5,v2.0,v1.0-med).');
+fprintf(fid,'%s\n','%                     Pia Stammer (v1.0-med).');
 fprintf(fid,'%s\n','%   ');
 fprintf(fid,'%s\n','%   StaRMAP project website:');
 fprintf(fid,'%s\n','%   https://github.com/starmap-project');
@@ -200,9 +202,10 @@ fprintf(fid,'%s\n','function output(par,x,y,z,U,step)');
 fprintf(fid,'%s\n','% Output function showing the progress.');
 fprintf(fid,'%s\n','E = par.E_plot(step);');
 fprintf(fid,'%s\n','fprintf(''Energy:%12.2fMeV\n'',E)');
-fprintf(fid,'%s\n',['plot(x,U(:,',num2str(ceil(prob.n(2)/2)),',',num2str(ceil(prob.n(3)/2)),')), hold on']);
+fprintf(fid,'%s\n','plot(x,U(:,ceil(par.n(2)/2),ceil(par.n(3)/2))'',''DisplayName'',[''E = '',num2str(E),''MeV''], ''LineWidth'',1.5)');
+fprintf(fid,'%s\n','hold on; legend');
 fprintf(fid,'%s\n','title([par.name,'': E = '',num2str(E),''MeV'']);');
-fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''zeroth-moment'')');
+fprintf(fid,'%s\n','xlabel(''x [cm]''), ylabel(''Radiative Intensity'')');
 fprintf(fid,'%s\n','drawnow');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','%========================================================================');
@@ -210,13 +213,13 @@ fprintf(fid,'%s\n','% Energy transformation.');
 fprintf(fid,'%s\n','%========================================================================');
 fprintf(fid,'%s\n','function E = Time2Energy(t,E_CutOff)');
 fprintf(fid,'%s\n','% Transformation: Time to energy.');
-fprintf(fid,'%s\n','E = max(0,energyTansform(energyTansform(E_CutOff,0)-t'',1))'';');
+fprintf(fid,'%s\n','E = max(0,energyTransform(energyTransform(E_CutOff,0)-t'',1))'';');
 fprintf(fid,'%s\n','');
 fprintf(fid,'%s\n','function t = Energy2Time(E,E_CutOff)');
 fprintf(fid,'%s\n','% Transformation: Energy to time.');
-fprintf(fid,'%s\n','t = max(0,energyTansform(E_CutOff-E'',0))'';');
+fprintf(fid,'%s\n','t = max(0,energyTransform(E_CutOff-E'',0))'';');
 fprintf(fid,'%s\n','');
-fprintf(fid,'%s\n','function TE = energyTansform(E,inv)');
+fprintf(fid,'%s\n','function TE = energyTransform(E,inv)');
 fprintf(fid,'%s\n','% Transform the energy using linear interpolation.');
 fprintf(fid,'%s\n','E_tab = [');
 fprintf(fid,'%12.8f\n',E_tab);
