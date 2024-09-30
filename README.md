@@ -21,7 +21,8 @@ http://math.temple.edu/~seibold/research/starmap/
 ## Examples implemented
 1. 1D Water Phantom : `starmap_create_water_phantom.m` and `starmap_1d_ex_water_phantom.m`
 2. 2D Lung CT scan test :`starmap_create_lung_cttest.m` and `starmap_2d_ex_lung_cttest.m`
-   ![testt test](lungctwithdose.png) 
+   ![Lung CT scan](lungctwithdose.png) 2D Lung CT scan with dose contours computed by the StarMAP solver overlaid
+   
 
 ## Operation
 Details of each test can be modified in the example generator files `starmap_create*`, running the example file then calls the StaRMAP solver. 
